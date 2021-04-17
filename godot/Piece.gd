@@ -33,5 +33,10 @@ func move_to(target):
 	position = target
 	
 	
-func end_move(target):
-	board.put_piece_on_board_world(self,target)
+#func end_move(target):
+#	board.put_piece_on_board_world(self,target)
+
+
+func change_parent(new_parent):
+	get_parent().remove_child(self)
+	new_parent.add_child(self)
