@@ -2,9 +2,6 @@ extends Node2D
 
 class_name Board
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
 var Piece = preload("res://Piece.tscn")
 
@@ -16,8 +13,6 @@ var board_height : int
 var tilemap : TileMap
 
 func init_board_tiles(w, h): #todo hardcoded size as 15
-	
-	
 	board_height = h
 	board_width = w
 	
@@ -31,8 +26,6 @@ func init_board_tiles(w, h): #todo hardcoded size as 15
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#var scene = load("res://Piece.tscn") #load scene
-	#var scene = preload("res://MyScene.tscn") #preloading while compile
 	tilemap = get_node("TileMap")
 	init_board_tiles(15, 15)
 	
@@ -51,7 +44,7 @@ func _ready():
 
 
 
-func put_piece_on_board_cell(piece, pos: Vector2):
+func put_piece_on_board_cell(piece: Piece, pos: Vector2):
 	if(pos.x < 0 || pos.x >= board_width):
 		return false
 	if(pos.y < 0 || pos.y >= board_height):
@@ -62,6 +55,7 @@ func put_piece_on_board_cell(piece, pos: Vector2):
 		
 	
 	#put on board
+	piece.change_parent(self)
 	board_tiles[pos.x][pos.y] = piece
 	var world_pos = tilemap.map_to_world(pos) + tilemap.cell_size/2
 	piece.position = world_pos
@@ -69,15 +63,11 @@ func put_piece_on_board_cell(piece, pos: Vector2):
 		
 func put_piece_on_board_world(piece, pos:Vector2):
 	var cell_pos = tilemap.world_to_map(pos)
-	put_piece_on_board_cell(piece, cell_pos)
+	return put_piece_on_board_cell(piece, cell_pos)
 
 
 
-func snap_position_to_board(position:Vector2):
-	var tilemap_position = tilemap.world_to_map(position)
-	var snapped_position = tilemap.map_to_world(tilemap_position) + tilemap.cell_size/2
-	return snapped_position
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+#func snap_position_to_board(position:Vector2):
+#	var tilemap_position = tilemap.world_to_map(position)
+#	var snapped_position = tilemap.map_to_world(tilemap_position) + tilemap.cell_size/2
+#	return snapped_position
