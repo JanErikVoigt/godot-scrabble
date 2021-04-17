@@ -24,10 +24,11 @@ func toggle_moving():
 
 func start_moving():
 	is_moving = true
+	get_parent().move_to(get_global_mouse_position())
 
 func stop_moving():
 	is_moving = false
-	get_parent().move_to(get_global_mouse_position())
+	get_parent().end_move(get_global_mouse_position())
 
 
 func _input_event(_viewport, event, _shape_idx):

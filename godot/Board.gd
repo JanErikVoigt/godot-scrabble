@@ -43,7 +43,7 @@ func _ready():
 	#instance.position.y = 100
 	
 	var pos = Vector2(2,3) 
-	put_piece_on_board(instance, pos)
+	put_piece_on_board_cell(instance, pos)
 	print("hello world")
 	#var newPiece = Piece.new("g",5)	
 	
@@ -51,13 +51,15 @@ func _ready():
 
 
 
-func put_piece_on_board(piece, pos: Vector2):
+func put_piece_on_board_cell(piece, pos: Vector2):
 	if(pos.x < 0 || pos.x >= board_width):
 		return false
 	if(pos.y < 0 || pos.y >= board_height):
 		return false
-	if(board_tiles[pos.x][pos.y] != null):
+	if(board_tiles[pos.x][pos.y] != null \
+	and board_tiles[pos.x][pos.y] != piece):
 		return false
+		
 	
 	#put on board
 	board_tiles[pos.x][pos.y] = piece
@@ -65,7 +67,11 @@ func put_piece_on_board(piece, pos: Vector2):
 	piece.position = world_pos
 	return true
 		
-		
+func put_piece_on_board_world(piece, pos:Vector2):
+	var cell_pos = tilemap.world_to_map(pos)
+	put_piece_on_board_cell(piece, cell_pos)
+
+
 
 func snap_position_to_board(position:Vector2):
 	var tilemap_position = tilemap.world_to_map(position)
