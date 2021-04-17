@@ -1,5 +1,6 @@
 extends Node2D
 
+class_name Board
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -9,12 +10,14 @@ var Piece = preload("res://Piece.tscn")
 
 var board_tiles
 
-var board_width
-var board_height
+var board_width : int
+var board_height : int
 
-var tile
+var tilemap : TileMap
 
 func init_board_tiles(w, h): #todo hardcoded size as 15
+	
+	
 	board_height = h
 	board_width = w
 	
@@ -30,10 +33,11 @@ func init_board_tiles(w, h): #todo hardcoded size as 15
 func _ready():
 	#var scene = load("res://Piece.tscn") #load scene
 	#var scene = preload("res://MyScene.tscn") #preloading while compile
-	
+	tilemap = get_node("TileMap")
 	init_board_tiles(15, 15)
 	
 	var instance = Piece.instance()
+	instance.constructor(self, "h",5);
 	add_child(instance)
 	#instance.position.x = 100
 	#instance.position.y = 100
@@ -57,12 +61,16 @@ func put_piece_on_board(piece, pos: Vector2):
 	
 	#put on board
 	board_tiles[pos.x][pos.y] = piece
-	var world_pos = get_child(0).map_to_world(pos) + get_child(0).cell_size/2
+	var world_pos = tilemap.map_to_world(pos) + tilemap.cell_size/2
 	piece.position = world_pos
 	return true
 		
 		
 
+func snap_position_to_board(position:Vector2):
+	var tilemap_position = tilemap.world_to_map(position)
+	var snapped_position = tilemap.map_to_world(tilemap_position) + tilemap.cell_size/2
+	return snapped_position
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
