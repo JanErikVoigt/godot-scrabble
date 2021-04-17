@@ -68,7 +68,8 @@ func put_piece_on_board_cell(piece, pos: Vector2):
 	return true
 		
 func put_piece_on_board_world(piece, pos:Vector2):
-	var cell_pos = tilemap.world_to_map(pos)
+	print("viewport: ", get_viewport())
+	var cell_pos = tilemap.world_to_map(get_viewport().get_mouse_position())
 	put_piece_on_board_cell(piece, cell_pos)
 
 
